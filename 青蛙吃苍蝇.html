@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>青蛙吃苍蝇</title>
+		<style type="text/css">
+			
+			.container{
+				width: 500px;
+				height: 400px;
+				border: solid 1px black;
+				margin: 50px auto;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.bug{
+				width: 60px;
+				height: 70px;
+				position: absolute;
+				left: 0;
+				top: 0;
+				background-image: url(img/bug_2.png);
+				background-size: cover;
+			}
+			.qingwa{
+				width: 250px;
+				height: 158px;
+				background-image: url(img/frog.png);
+				background-repeat: no-repeat;
+				position: absolute;
+				bottom: 20px;
+				-webkit-animation: ok1 0.6s linear infinite;
+			}
+			
+			@-webkit-keyframes ok1{
+				0%{
+					background-image: url(img/frog.png);
+				}
+				50%{
+					background-image: url(img/frog.png);
+				}
+				100%{
+					background-image: url(img/frog1.jpg);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="bug"></div>
+			<div class="qingwa"></div>
+		</div>
+		
+		<script type="text/javascript">
+			
+			var container = document.querySelector(".container");
+			var n = 30;
+			var bugs = [];
+			
+			var t = setInterval(function(){
+				for(var i=0;i<bugs.length;i++){
+					bugs[i].move();
+					var b = bugs[i].checkBoom();
+					
+					if(b!=null){
+						var tmp = b.xv;
+						b.xv = bugs[i].xv;
+						bugs[i].xv = tmp;
+						
+						tmp = b.yv;
+						b.yv = bugs[i].yv;
+						bugs[i].yv = tmp;
+						while(bubbles[i].checkBoom()){
+							bugs[i].move();
+						}
+					}
+				}
+				
+			},100);
+			
+			function bugs(){
+				
+				this.isRed = false;
+				
+				this.width = Math.random()*60+60;
+				this.height = this.width;
+				
+				this.x = Math.random()*(container.offsetWidth - this.width);
+				this.y = Math.random()*(container.offsetHeight - this.height);
+				
+				this.d = Math.random()*360;
+				
+				this.v = 6;
+				
+				this.xv = Math.cos(this.d/180*Math.PI)*this.v;
+				this.yv = Math.sin(this.d/180*Math.PI)*this.v;
+				
+				this.div = document.createElement("div");
+				
+				this.setPosition = function(x,y){
+					
+					x = x<0-this.width?container.offsetWidth:x;
+					x = x>container.offsetWidth?0-this.width:x;
+					
+					y = y<0-this.height?container.offsetHeight:y;
+					y = y>container.offsetHeight?0-this.height:y;
+					
+					this.x = x;
+					this.y = y;
+					this.div.style.left = this.x+"px";
+					this.div.style.top = this.y+"px";
+				}
+				
+				this.init = function(){
+					this.div.setAttribute("class","bug");
+					this.div.style.width = this.width+"px";
+					this.div.style.height = this.height+"px";
+					this.setPosition(this.x,this.y);
+				}
+				
+				this.move = function(){
+					this.setPosition(this.x+this.xv,this.y+this.yv);
+				}
+			}
+		</script>
+		
+	</body>
+</html>
