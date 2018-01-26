@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			
+			.ball{
+				width: 500px;
+				height: 500px;
+				border-radius: 50%;
+				margin: 50px auto;
+				position: relative;
+				font-family: "微软雅黑" "宋体" arial;
+			}
+			
+			.ball a{
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				text-decoration: none;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="ball">
+			<a href="#">A</a>
+			<a href="#">B</a>
+			<a href="#">C</a>
+			<a href="#">D</a>
+			<a href="#">E</a>
+			<a href="#">F</a>
+			<a href="#">G</a>
+			<a href="#">A</a>
+			<a href="#">B</a>
+			<a href="#">C</a>
+			<a href="#">D</a>
+			<a href="#">E</a>
+			<a href="#">F</a>
+			<a href="#">G</a>
+			<a href="#">A</a>
+			<a href="#">B</a>
+			<a href="#">C</a>
+			<a href="#">D</a>
+			<a href="#">E</a>
+			<a href="#">F</a>
+			<a href="#">G</a>
+			<a href="#">A</a>
+			<a href="#">B</a>
+			<a href="#">C</a>
+			<a href="#">D</a>
+			<a href="#">E</a>
+			<a href="#">F</a>
+			<a href="#">G</a>
+			<a href="#">A</a>
+			<a href="#">B</a>
+			<a href="#">C</a>
+			<a href="#">D</a>
+			<a href="#">E</a>
+			<a href="#">F</a>
+			<a href="#">G</a>
+			<a href="#">A</a>
+			<a href="#">B</a>
+			<a href="#">C</a>
+			<a href="#">D</a>
+			<a href="#">E</a>
+			<a href="#">F</a>
+			<a href="#">G</a>
+		</div>
+		
+		<script type="text/javascript">
+			
+			var all = document.querySelectorAll(".ball a");
+			var n = all.length;
+			var r = document.querySelector(".ball").offsetWidth/2;
+			var angleX = 1;
+			var angleY = 1;
+			var angleZ = 1;
+			var tags = [];
+			
+			for(var i=0;i<n;i++){
+				
+				var a = Math.acos( (2*(i+1)-1)/n -1);
+				var b = a*Math.sqrt(n*Math.PI);
+				var T = new tag(all[i],a,b);
+				
+				tags.push(T);
+			}
+			
+			
+			var timer = setInterval(function(){
+				
+				for(var i=0;i<n;i++){
+					tags[i].rotateX();
+					tags[i].rotateY();
+					tags[i].rotateZ();
+				}
+				
+			}, 50);
+			
+			function tag(obj,a,b){
+				
+				this.x = r*Math.sin(a)*Math.cos(b);
+				this.y = r*Math.sin(a)*Math.sin(b);
+				this.z = r*Math.cos(a);
+				var a = Math.floor(Math.random() * 255);
+				var b = Math.floor(Math.random() * 255);
+				var c = Math.floor(Math.random() * 255);
+				this.obj = obj;
+				this.obj.style.color = "rgb(" + a + "," + b + "," + c + ")";
+				
+				this.setPosition = function(x,y,z){
+					this.x = x;
+					this.y = y;
+					this.z = z;
+					this.obj.style.left = this.x+r+'px';
+					this.obj.style.top =  this.y+r+"px";
+					this.obj.style.fontSize = ((this.z+r)/2+r)/r*10+"px";
+					this.obj.style.zIndex = Math.ceil(this.z);
+				}
+				
+				this.rotateX = function(){
+					var a = angleX / 180 * Math.PI;
+					var y = this.y * Math.cos(a) - this.z * Math.sin(a);
+					var z = this.y * Math.sin(a) + this.z * Math.cos(a);
+					this.setPosition(this.x, y, z);
+				}
+				this.rotateY = function(){
+					var b = angleY / 180 * Math.PI;
+					var x = this.z * Math.sin(b) + this.x * Math.cos(b);
+					var z = this.z * Math.cos(b) - this.x * Math.sin(b);
+					this.setPosition(x, this.y, z);
+				}
+				this.rotateZ = function(){
+					var g = angleZ / 180 * Math.PI;
+					var x = this.x * Math.cos(g) - this.y * Math.sin(g);
+					var y = this.x * Math.sin(g) + this.y * Math.cos(g);
+					this.setPosition(x, y, this.z);
+				}
+				
+				this.setPosition(this.x,this.y,this.z);
+			}
+			
+		</script>
+	</body>
+</html>
